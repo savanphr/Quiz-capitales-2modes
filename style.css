@@ -113,7 +113,7 @@ button {
   width: 90%;
   margin-bottom: 10px;
   background-color: #2196f3;
-  color: black;
+  color: #FFF !important;
 }
 
 #saisie-libre {
