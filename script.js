@@ -21,6 +21,8 @@ const texts = {
     emptyDataError: "Aucune donnée disponible pour poser une question.",
     dataError: "Problème avec l’entrée choisie :",
     countryName: "Pays",
+    modeQcm: "QCM",
+    modeSaisie: "Saisie"
   },
   en: {
     title: "Capital Quiz 🌍",
@@ -37,6 +39,8 @@ const texts = {
     emptyDataError: "No data available to ask a question.",
     dataError: "Problem with the chosen entry:",
     countryName: "Country",
+    modeQcm: "MCQ",
+    modeSaisie: "Typing"
   }
 };
 
@@ -49,8 +53,8 @@ function updateUI() {
   document.getElementById("next").textContent = langText.nextButton;
   document.getElementById("reset").textContent = langText.resetButton;
   document.getElementById("score").textContent = `${langText.score} ${score} / ${total}`;
-  document.getElementById("mode-qcm").textContent = "QCM";
-  document.getElementById("mode-saisie").textContent = "Saisie";
+  document.getElementById("mode-qcm").textContent = langText.modeQcm;
+  document.getElementById("mode-saisie").textContent = langText.modeSaisie;
   if (currentMode === 'qcm') {
     document.getElementById("mode-qcm").classList.add("active");
     document.getElementById("mode-saisie").classList.remove("active");
@@ -66,18 +70,17 @@ function setLanguage(lang) {
   resetQuiz();
 }
 
-// Charger la liste des pays
 async function loadCountries() {
   try {
     const response = await fetch("countries_bilingual.json");
     if (!response.ok) throw new Error(texts[currentLang].loadingError);
-
+    
     countries = await response.json();
 
     if (!Array.isArray(countries) || countries.length === 0) {
       throw new Error(texts[currentLang].emptyDataError);
     }
-
+    
     console.log(`✅ ${texts[currentLang].countryName}s loaded:`, countries.length);
     nextQuestion();
   } catch (error) {
@@ -106,7 +109,7 @@ function nextQuestion() {
     console.error(`⚠️ ${texts[currentLang].dataError}`, currentCountry);
     return;
   }
-
+  
   const countryToDisplay = currentLang === 'fr' ? currentCountry.pays : currentCountry.en_pays;
   document.getElementById("country").innerText = countryToDisplay;
   document.getElementById("result").textContent = "";
@@ -123,10 +126,11 @@ function setupQCM() {
   document.getElementById("qcm-options").style.display = "flex";
   document.getElementById("saisie-libre").style.display = "none";
   document.getElementById("submit").style.display = "none";
+  document.getElementById("next").style.display = "inline-block";
 
   const correctCapital = currentLang === 'fr' ? currentCountry.capitale : currentCountry.en_capitale;
   let options = [correctCapital];
-
+  
   while (options.length < 4) {
     const randomCountry = countries[Math.floor(Math.random() * countries.length)];
     const randomCapital = currentLang === 'fr' ? randomCountry.capitale : randomCountry.en_capitale;
@@ -147,6 +151,7 @@ function setupSaisie() {
   document.getElementById("qcm-options").style.display = "none";
   document.getElementById("saisie-libre").style.display = "block";
   document.getElementById("submit").style.display = "inline-block";
+  document.getElementById("next").style.display = "inline-block";
 }
 
 function checkQCMAnswer(userAnswer) {
@@ -191,15 +196,13 @@ function resetQuiz() {
 document.getElementById("mode-qcm").addEventListener("click", () => {
   currentMode = 'qcm';
   updateUI();
-  setupQCM();
-  resetQuiz();
+  nextQuestion(); // Changed to nextQuestion to set up the new quiz type
 });
 
 document.getElementById("mode-saisie").addEventListener("click", () => {
   currentMode = 'saisie';
   updateUI();
-  setupSaisie();
-  resetQuiz();
+  nextQuestion(); // Changed to nextQuestion to set up the new quiz type
 });
 
 document.getElementById("submit").addEventListener("click", checkSaisieAnswer);
