@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Capitales</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1976d2" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="icon" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="icon" sizes="512x512" href="icons/icon-512.png" />
+</head>
+<body>
+  <div id="lang-selector">
+    <button onclick="setLanguage('fr')">🇫🇷</button>
+    <button onclick="setLanguage('en')">🇬🇧</button>
+  </div>
+  <h1>Quiz des Capitales 🌍</h1>
+  
+  <div id="quiz">
+    <div id="mode-selector">
+      <button id="mode-qcm" class="active">QCM</button>
+      <button id="mode-saisie">Saisie</button>
+    </div>
+
+    <p id="question">Quelle est la capitale de :</p>
+    <h2 id="country">Chargement...</h2>
+
+    <div id="qcm-options">
+      <button id="qcm-option-1"></button>
+      <button id="qcm-option-2"></button>
+      <button id="qcm-option-3"></button>
+      <button id="qcm-option-4"></button>
+    </div>
+    
+    <div id="saisie-libre">
+      <input type="text" id="answer" placeholder="Votre réponse" />
+    </div>
+
+    <div id="quiz-actions">
+      <button id="submit">Valider</button>
+      <button id="next">Suivant</button>
+      <button id="reset">Réinitialiser</button>
+    </div>
+    
+    <p id="result"></p>
+    <p><span id="score">0</span></p>
+
+    <script src="script.js"></script>
+  </div>
+
+
+</body>
+</html>
